@@ -1,0 +1,45 @@
+body{
+    font-family: 'Inter';
+    background-color: #1f1f1f;
+    color: #fff;
+}
+.trending-body{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width:100vw;
+}
+.trending-header{
+    width: 100vw;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    font-size: 42px;
+}
+.movie-card{
+    width: 230px;
+    height: 330px;
+    position: relative;
+    overflow: hidden;
+    background-color: #fff;
+    border-radius: 20px;
+    margin: 25px; /* Add some spacing between cards */
+    margin-bottom: 50px;
+    background: #1f1f1f;
+    box-shadow:  7px 7px 14px #0c0c0c, -7px -7px 14px #323232;
+    transition: 400ms cubic-bezier(0.5, -0.5, 0, 1);
+}
+.movie-card img{
+    width: 100%;
+    height: 100%; /* Maintain height of the original image */
+    /* transition: height 0.5s ease, opacity 0.5s ease; */
+    object-fit: cover; /* Maintain aspect ratio */
+    position: absolute; /* Position images absolutely within the card */
+    top: 0; /* Align to top */
+    left: 0; /* Align to left */
+}
+.movie-card:hover {
+    transform: scale(102%);
+    box-shadow:  12px 12px 20px #0c0c0c,
+             -12px -12px 20px #323232;
+}
