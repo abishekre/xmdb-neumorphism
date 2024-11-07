@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Click Example</title>
+    <style>
+        .card {
+            width: 150px;
+            height: 150px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            display: inline-block;
+            text-align: center;
+            line-height: 150px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Click a Card to Open a Page</h1>
+    
+    <!-- Card elements with unique ids -->
+    <div class="card" id="card1">Card 1</div>
+    <div class="card" id="card2">Card 2</div>
+    <div class="card" id="card3">Card 3</div>
+
+    <script>
+        // Add click event listeners to each card
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const cardId = card.id; // Get the id of the clicked card
+                window.location.href = window.location.href+`?id=${cardId}`; // Redirect to the page with the card id
+            });
+        });
+
+        // Check if the URL has an 'id' parameter, and redirect if not
+        if (window.location.href.includes("test.html")) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const cardId = urlParams.get('id');
+            if (!cardId) {
+                // Redirect to homepage if 'id' is not found in the URL
+                window.location.href = '/';
+            }
+        }
+    </script>
+</body>
+</html>
