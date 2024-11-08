@@ -46,14 +46,27 @@ function displayMovieDetails(movie) {
     if (!body) return;
 
     // Build the HTML content for the movie details page
+    const genresHTML = movie.genres.map(genre => {
+        return `<div class="genre-button">${genre.name}</div>`;
+    }).join('');
     const movieHtml = `
-        <h1>${movie.title}</h1>
-        <div class="movie-image">
-            <img class="posterImage" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+        <div class="movie-details">
+            <div class="movie-image">
+                <img class="posterImage"
+                     src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
+                     alt="${movie.title}" 
+                     loading="lazy">
+            </div>
+            <div class="details">
+                <div class="title">${movie.title}</div>
+                <div class="subtitle">${movie.tagline}</div>
+                <div class="genres">${genresHTML}</div>
+                <div class="overview">${movie.overview}</div>
+            </div>
         </div>
-        <img class="posterImage" src="https://image.tmdb.org/t/p/w500/16KWBMmfPX0aJzDExDrPxSLj0Pg.png" alt="${movie.title}">
     `;
-    
+
+
     // Update the page with movie details
     body.innerHTML = movieHtml;
 

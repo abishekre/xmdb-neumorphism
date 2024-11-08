@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TMDB Movie Details</title>
+    <style>
+        /* Basic styling for the genre buttons */
+        .genre-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .genre-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Basic styling for the movie details */
+        #moviedetails {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #moviedetails img {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="moviedetails">
+        <h1>Loading movie details...</h1>
+    </div>
+
+    <script>
+        const API_KEY = 'd4703e60cf0d1782ebbe2f62ec94230a';  // Replace with your TMDB API key
+        const MOVIE_ID = 1184918;          // Example: Movie ID for Inception (change this to the movie you want)
+        const LANGUAGE = 'en-US';        // You can change the language code if you prefer
+
+        const url = `https://api.themoviedb.org/3/movie/${MOVIE_ID}?api_key=${API_KEY}&language=${LANGUAGE}`;
+
+        // Fetch movie details from TMDB API
+        fetch(url)
+            .then(response => response.json())
+            .then(movie => {
+                const movieDetailsDiv = document.getElementById('moviedetails');
+
+                // Generate the movie details HTML
+                const genresHTML = movie.genres.map(genre => {
+                    return `<div class="genre-button">${genre.name}</div>`;
+                }).join('');
+
+                const movieDetailsHTML = `
+                    <h1>${movie.title}</h1>
+                    <p><strong>Release Date:</strong> ${movie.release_date}</p>
+                    <p><strong>Overview:</strong> ${movie.overview}</p>
+                    <p><strong>Genres:</strong> <div class="genres">${genresHTML}</div></p>
+                    <p><strong>Rating:</strong> ${movie.vote_average}</p>
+                    <p><strong>Runtime:</strong> ${movie.runtime} minutes</p>
+                    <p><strong>Language:</strong> ${movie.original_language}</p>
+                    <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title} Poster" />
+                    <img src="https://image.tmdb.org/t/p/w500${movie.backdrop_path}" alt="${movie.title} Backdrop" />
+                `;
+
+                // Inject the movie details into the moviedetails div
+                movieDetailsDiv.innerHTML = movieDetailsHTML;
+            })
+            .catch(error => {
+                console.error('Error fetching movie details:', error);
+                document.getElementById('moviedetails').innerHTML = 'Failed to load movie details.';
+            });
+    </script>
+</body>
+</html>

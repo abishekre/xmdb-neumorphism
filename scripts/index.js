@@ -29,7 +29,7 @@ function renderTrendingMovies(movies) {
                 <img class="posterImage"
                      src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
                      alt="${movie.title}" 
-                     loading="lazy"> <!-- Lazy loading added -->
+                     loading="lazy">
             </div>
         </div>
     `).join('');
