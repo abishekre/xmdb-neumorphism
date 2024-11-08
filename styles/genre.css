@@ -1,0 +1,6 @@
+.genre{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width:100vw;
+    transition: 400ms cubic-bezier(0.5, -0.5, 0, 1);
+}
