@@ -1,40 +1,75 @@
 const API_KEY = 'd4703e60cf0d1782ebbe2f62ec94230a';
 const BASE_URL = 'https://api.themoviedb.org/3';
 
-function trendingMovies(){
-    fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`)
-    .then(response => response.json())
-    .then(data => renderTrendingMovies(data.results))
-    .catch(error => console.error('Error:', error));
+// Fetch trending movies and render them
+async function trendingMovies() {
+    try {
+        const response = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`);
+        const data = await response.json();
+
+        if (data.results && data.results.length > 0) {
+            renderTrendingMovies(data.results);
+        } else {
+            handleError('No trending movies found.');
+        }
+    } catch (error) {
+        handleError(`Error fetching data: ${error.message}`);
+    }
 }
 
-// https://api.themoviedb.org/3/movie/933260?api_key=d4703e60cf0d1782ebbe2f62ec94230a
-// https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key=YOUR_API_KEY  
-
-function renderTrendingMovies(movies){
+// Render movie cards
+function renderTrendingMovies(movies) {
     const trendingBody = document.getElementById("trending-body");
-    trendingBody.innerHTML='';
-    movies.forEach(movie => {
-        const movieCard = document.createElement('div');
-        movieCard.classList.add('movie-card');
-        movieCard.dataset.movieId = movie.id;  // Assign movie ID to the data attribute
-        movieCard.innerHTML = `
+    
+    if (!trendingBody) return;
+
+    const movieCardsHtml = movies.map(movie => `
+        <div class="movie-card" data-movieid="${movie.id}">
             <div class="movie-image">
-                <img class="posterImage" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+                <img class="posterImage"
+                     src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
+                     alt="${movie.title}" 
+                     loading="lazy"> <!-- Lazy loading added -->
+            </div>
+        </div>
+    `).join('');
+    
+    // Insert the generated HTML into the DOM
+    trendingBody.innerHTML = movieCardsHtml;
+
+    // Add click event listener for the entire container (event delegation)
+    trendingBody.addEventListener('click', handleMovieCardClick);
+}
+
+// Handle movie card click
+function handleMovieCardClick(event) {
+    const movieCard = event.target.closest('.movie-card');
+    
+    if (!movieCard) return;  // Ensure that we clicked on a valid movie card
+    
+    const movieId = movieCard.dataset.movieid;
+    
+    if (movieId) {
+        // Redirect to movie details page with the movie ID in the URL
+        window.location.href = `movie-details.html?movieId=${movieId}`;
+    } else {
+        console.error('No movieId found in the clicked card.');
+    }
+}
+
+// Error handling function
+function handleError(message) {
+    const trendingBody = document.getElementById("trending-body");
+    
+    if (trendingBody) {
+        trendingBody.innerHTML = `
+            <div class="error-message">
+                <span class="error-icon">⚠️</span> <!-- Error Icon -->
+                <p>Error: ${message}</p>
             </div>
         `;
-        trendingBody.appendChild(movieCard);
-    });
-    const movieCards = document.querySelectorAll('.movie-card');
-    movieCards.forEach(movieCard => {
-        movieCard.addEventListener('click', () => {
-            const movieId = movieCard.dataset.movieId;  // Get the movie ID from the data attribute
-            console.log(movieId);
-            window.location.href = `movie-details.html?movieId=${movieId}`;  // Use the correct parameter name
-        });
-    });
+    }
 }
 
-
-
+// Fetch trending movies when the page loads
 trendingMovies();

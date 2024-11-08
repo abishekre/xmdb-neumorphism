@@ -1,45 +1,77 @@
 const API_KEY = 'd4703e60cf0d1782ebbe2f62ec94230a';
 const BASE_URL = 'https://api.themoviedb.org/3';
 
+// Wait for the window to load and process the URL parameters
 window.addEventListener('load', function() {
     const urlParams = new URLSearchParams(window.location.search);
-    const movieId = urlParams.get('movieId');  // Make sure this matches the parameter used in the URL
+    const movieId = urlParams.get('movieId'); // Retrieve the movieId from the URL
 
     if (movieId) {
-        renderMoviesPage(movieId);  // If the movieId is found in the URL, render the details page
+        renderMoviesPage(movieId); // Render the movie details page if movieId exists
     } else {
-        const body = document.getElementById("movieDetails");
-        body.innerHTML = `
-            <h2>Error 404: Movie not found</h2>
-            <p>Redirecting you to the homepage...</p>
-        `;
-        // Redirect to homepage after a 2-second delay
-        setTimeout(() => {
-            window.location.href = 'index.html';  // Redirect to homepage
-        }, 2000);
+        showErrorPage(); // Show error page if movieId is missing
     }
 });
 
-function renderMoviesPage(movieId){
-    console.log(movieId);
-    fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`)
-    .then(response => response.json())
-    .then(data => {
-        MoviesPage(data);
-        // console.log(data);
-    })
-    .catch(error => console.error('Error:', error));
-    
+// Function to render the movie details page
+async function renderMoviesPage(movieId) {
+    try {
+        const movie = await fetchMovieDetails(movieId);
+        if (movie) {
+            displayMovieDetails(movie); // Render movie details if valid
+        } else {
+            showErrorPage(); // Show error if movie data is invalid
+        }
+    } catch (error) {
+        console.error('Error fetching movie details:', error);
+        showErrorPage(); // Show error page if an exception occurs
+    }
 }
 
-function MoviesPage(movie){
+// Function to fetch movie details from the API
+async function fetchMovieDetails(movieId) {
+    const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
+    
+    if (!response.ok) {
+        throw new Error('Failed to fetch movie details');
+    }
+
+    const data = await response.json();
+    return data || null;
+}
+
+// Function to display the movie details on the page (reverted to original)
+function displayMovieDetails(movie) {
     const body = document.getElementById("movieDetails");
-    body.innerHTML=`
-    <h1>${movie.title}</h1>
-    <div class="movie-image">
-        <img class="posterImage" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
-    </div>
-    <img class="posterImage" src="https://image.tmdb.org/t/p/w500/16KWBMmfPX0aJzDExDrPxSLj0Pg.png" alt="${movie.title}">
+    if (!body) return;
+
+    // Build the HTML content for the movie details page
+    const movieHtml = `
+        <h1>${movie.title}</h1>
+        <div class="movie-image">
+            <img class="posterImage" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+        </div>
+        <img class="posterImage" src="https://image.tmdb.org/t/p/w500/16KWBMmfPX0aJzDExDrPxSLj0Pg.png" alt="${movie.title}">
     `;
-    body.innerHTML=body.innerHTML+JSON.stringify(movie);
+    
+    // Update the page with movie details
+    body.innerHTML = movieHtml;
+
+    // Optional: Render the full movie object for debugging purposes
+    // body.innerHTML += `<pre>${JSON.stringify(movie, null, 2)}</pre>`;
+}
+
+// Function to display error page
+function showErrorPage() {
+    const body = document.getElementById("movieDetails");
+    if (!body) return;
+
+    body.innerHTML = `
+        <h2>Error 404: Movie not found</h2>
+        <p>Redirecting you to the homepage...</p>
+    `;
+    // Redirect to homepage after a 2-second delay
+    setTimeout(() => {
+        window.location.href = 'index.html'; // Redirect to homepage
+    }, 2000);
 }
