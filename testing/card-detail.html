@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Detail Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .card-detail-container {
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card-detail-container">
+    <h1>Card Details</h1>
+    <p id="card-id">Loading...</p>
+    <button class="button" onclick="goBack()">Back to Home</button>
+</div>
+
+<script>
+    // Function to go back to the home page
+    function goBack() {
+        window.location.href = 'index.html'; // Go back to the home page
+    }
+
+    // Get the cardId from the URL query parameter and display it
+    window.addEventListener('load', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const cardId = urlParams.get('cardId');
+        
+        if (cardId) {
+            // Display the card ID on the page
+            document.getElementById('card-id').textContent = `Card ID: ${cardId}`;
+        } else {
+            document.getElementById('card-id').textContent = 'No card selected';
+        }
+    });
+</script>
+
+</body>
+</html>

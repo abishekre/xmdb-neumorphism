@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .card-container {
+            display: flex;
+            gap: 20px;
+        }
+        .card {
+            width: 200px;
+            height: 200px;
+            background-color: #4CAF50;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.1);
+        }
+        .card p {
+            margin: 0;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="home-page" class="card-container">
+    <!-- Cards will be dynamically added here -->
+</div>
+
+<script>
+    // Dynamically generate cards with IDs 1, 2, 3
+    const cardContainer = document.getElementById('home-page');
+    const cardIds = [1, 2, 3];  // IDs for cards
+    cardIds.forEach(id => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.dataset.id = id;  // Assigning data-id attribute dynamically
+        card.innerHTML = `<p>Card ${id}</p>`;
+        cardContainer.appendChild(card);
+    });
+
+    // Event delegation: listen for clicks on the parent container (home-page)
+    cardContainer.addEventListener('click', function(event) {
+        // Check if the clicked element is a card (by class or data attribute)
+        if (event.target.closest('.card')) {
+            const cardId = event.target.closest('.card').dataset.id; // Accessing the dataset
+            openCardPage(cardId);
+        }
+    });
+
+    // Function to open card detail page with cardId as a URL parameter
+    function openCardPage(cardId) {
+        window.location.href = `card-detail.html?cardId=${cardId}`;
+    }
+</script>
+
+</body>
+</html>
