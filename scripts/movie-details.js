@@ -94,7 +94,7 @@ function displayMovieDetails(movie,cast) {
             });
 
     const crewHTML = uniqueCrew.map(crew => {
-        return `<div id="cast-button class="cast-button">
+        return `<div id="cast-button" class="cast-button">
                     <div class="title3">${crew.name}</div>
                     <div class="subtitle">${crew.job}</div>
                 </div>`;

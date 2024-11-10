@@ -72,9 +72,9 @@ body{
 }
 
 .genre-button:hover {
-    transform: scale(101%);
-    box-shadow:  6px 6px 12px #0c0c0c,
-             -6px -6px 12px #323232;
+    transform: scale(99%);
+    box-shadow: inset 5px 5px 10px #0c0c0c,
+            inset -5px -5px 10px #323232;
 }
 
 .title2{
@@ -121,14 +121,13 @@ body{
     margin-right: 20px;
     align-items: center;
     align-content: center;
+    align-content: space-between;
 }
 
 .cast-button:hover {
-    transform: scale(98%);
-    /* box-shadow:  6px 6px 12px #0c0c0c,
-             -6px -6px 12px #323232; */
-             box-shadow: inset 5px 5px 10px #151515,
-            inset -5px -5px 10px #292929;
+    transform: scale(101%);
+    box-shadow:  6px 6px 12px #0c0c0c,
+             -6px -6px 12px #323232;
 }
 
 .title3{
